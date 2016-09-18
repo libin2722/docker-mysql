@@ -7,17 +7,20 @@
 FROM       daocloud.io/libin2722/centos:latest
 MAINTAINER Terry.Li,<libin2722@sohu.com>
 
-ENV MYSQL_DIR /var/lib/mysql
+ENV PACKAGE_URL https://repo.mysql.com/yum/mysql-5.7-community/docker/x86_64/mysql-community-server-minimal-5.7.15-1.el7.x86_64.rpm
 
-ADD mysql57-community-release-el7-9.noarch.rpm . 
+# Install server
+RUN rpmkeys --import http://repo.mysql.com/RPM-GPG-KEY-mysql \
+  && yum install -y $PACKAGE_URL \
+  && yum install -y libpwquality \
+  && rm -rf /var/cache/yum/*
+RUN mkdir /docker-entrypoint-initdb.d
 
-RUN yum localinstall -y mysql57-community-release-el7-9.noarch.rpm && \
-    yum install -y mysql-community-server epel-release expect && \
-    yum update -y && \
-    yum clean all && \
-    rm -rf /var/cache/*
+VOLUME /var/lib/mysql
 
+COPY docker-entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 
-
-EXPOSE 3306
+EXPOSE 3306 33060
+CMD ["mysqld"]
 
