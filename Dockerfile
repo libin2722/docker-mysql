@@ -24,3 +24,5 @@ ENTRYPOINT ["/entrypoint.sh"]
 EXPOSE 3306 33060
 CMD ["mysqld"]
 
+#ALTER USER root IDENTIFIED BY '123456';
+
