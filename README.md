@@ -1,3 +1,6 @@
+docker run -d -p 3306:3306 --name mysql --restart=always -v /opt/docker/docker-registry-v2/data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -e MYSQL_DATABASE=lalala daocloud.io/libin2722/mysql:latest
+
+
 # docker-mysql
 
 
